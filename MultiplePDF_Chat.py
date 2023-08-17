@@ -209,7 +209,7 @@ def main_1():
                     # create conversation chain - st.session_state[Holds the memmory until session ends]
                     st.session_state.conversation = get_conversation_chain(vectorstore)
                     summary = get_conversation_chain(vectorstore)
-                    summary_ans = summary({'question': "Summary of all data in 2 lines and give 3 sample questions to ask in number format"})
+                    summary_ans = summary({'question': "Summary of all data in 2 lines after that write in next line with header Sample Questions and give 3 sample questions to ask in number format in next line"})
                     st.session_state.summary_ans = summary_ans["answer"]
                     # st.write("Summary:\n")
                     # st.markdown('<div style="text-align: justify;">' + st.session_state.summary_ans + '</div>',unsafe_allow_html=True)
