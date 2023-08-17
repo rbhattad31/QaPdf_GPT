@@ -13,11 +13,19 @@ import os
 import shutil
 # Azure Details:
 
-OPENAI_API_TYPE = os.getenv("OPENAI_API_TYPE")
-OPENAI_API_BASE = os.getenv("OPENAI_API_BASE")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_API_VERSION = os.getenv("OPENAI_API_VERSION")
-
+os.environ['OPENAI_API_VERSION'] = "2023-03-15-preview"
+if os.getenv("OPENAI_API_TYPE"):
+    openai_api_type = os.getenv("OPENAI_API_TYPE")
+else:
+    openai_api_type = st.secrets["OPENAI_API_TYPE"]
+if os.getenv("OPENAI_API_BASE"):
+    openai_api_base = os.getenv("OPENAI_API_BASE")
+else:
+    openai_api_base = st.secrets["OPENAI_API_BASE"]
+if os.getenv("OPENAI_API_KEY"):
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+else:
+    openai_api_key = st.secrets["OPENAI_API_KEY"]
 
 class Pdferror(Exception):
     pass
