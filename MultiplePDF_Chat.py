@@ -44,7 +44,7 @@ def convert_pdf_to_img(pdf_file):
     @returns:
         - an interable containing image format of all the pages of the PDF
     """
-    return convert_from_path(pdf_file, 500, poppler_path=r"C:\Program Files (x86)\poppler-0.68.0\bin")
+    return convert_from_path(pdf_file, 500, poppler_path=r"poppler-0.68.0\bin")
 
 
 def convert_image_to_text(file):
