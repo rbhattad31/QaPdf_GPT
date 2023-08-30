@@ -9,11 +9,12 @@ from langchain.chains import ConversationalRetrievalChain
 from htmlTemplates import css, bot_template, user_template
 from pdf2image import convert_from_path
 from pytesseract import image_to_string
+from langchain.embeddings import SentenceTransformerEmbeddings
 import os
 import shutil
 # Azure Details:
 
-os.environ['OPENAI_API_VERSION'] = "2023-03-15-preview"
+os.environ['OPENAI_API_VERSION'] = "2023-07-01-preview"
 if os.getenv("OPENAI_API_TYPE"):
     openai_api_type = os.getenv("OPENAI_API_TYPE")
 else:
@@ -139,8 +140,9 @@ def get_text_chunks(text_dict, pdf_names):
 
 
 def get_vectorstore(text_chunks, pdf_names):
-    embeddings = OpenAIEmbeddings(deployment="bradsol-embedding-test", chunk_size=1, request_timeout=10)
-    llm = AzureChatOpenAI(deployment_name="bradsol-openai-test", model_name="gpt-35-turbo", request_timeout=10)
+    embeddings = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
+    # embeddings = OpenAIEmbeddings(deployment="bradsol-embedding-test", chunk_size=1, request_timeout=10)
+    llm = AzureChatOpenAI(deployment_name="qnagpt5", model_name="gpt-35-turbo", request_timeout=10)
     for i in range(len(text_chunks)):
         text = text_chunks[pdf_names[i]]
         vectorstore_temp = FAISS.from_texts(texts=text, embedding=embeddings)
@@ -155,7 +157,7 @@ def get_vectorstore(text_chunks, pdf_names):
 
 
 def get_conversation_chain(vectorstore):
-    llm = AzureChatOpenAI(deployment_name="bradsol-openai-test", model_name="gpt-35-turbo", request_timeout=10)
+    llm = AzureChatOpenAI(deployment_name="qnagpt5", model_name="gpt-35-turbo", request_timeout=10)
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
     conversation_chain = ConversationalRetrievalChain.from_llm(llm=llm, retriever=vectorstore.as_retriever(), memory=memory)
     return conversation_chain
